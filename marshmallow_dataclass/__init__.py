@@ -489,6 +489,13 @@ def field_for_schema(
                 type_mapping.get(List, marshmallow.fields.List),
             )
             return list_type(child_type, **metadata)
+        if origin in (set, Set):
+            child_type = field_for_schema(arguments[0], base_schema=base_schema)
+            set_type = cast (
+                Type[marshmallow.fields.Set],
+                type_mapping.get(Set, marshmallow.fields.Set)
+            )
+            return set_type(child_type, **metadata)
         if origin in (tuple, Tuple):
             children = tuple(
                 field_for_schema(arg, base_schema=base_schema) for arg in arguments
